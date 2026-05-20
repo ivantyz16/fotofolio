@@ -1,428 +1,1335 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Ivan Kurniawan | Portfolio Professional</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ivan Kurniawan — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #03020a;
+  --bg2:      #07051a;
+  --bg3:      #0d0b2a;
+  --card:     #0a0919;
+  --border:   #1a1535;
+  --cyan:     #00f5ff;
+  --pink:     #ff0080;
+  --purple:   #9d00ff;
+  --yellow:   #f5e642;
+  --green:    #00ff88;
+  --white:    #e8e0ff;
+  --dim:      #6a607a;
+  --font-h:   'Orbitron', sans-serif;
+  --font-m:   'Share Tech Mono', monospace;
+  --font-b:   'Rajdhani', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font-b);
+  overflow-x: hidden;
+  cursor: none;
+}
+::selection { background: var(--cyan); color: var(--bg); }
 
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+#cur {
+  position: fixed;
+  width: 10px; height: 10px;
+  background: var(--cyan);
+  border-radius: 0;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%,-50%);
+  transition: width .15s, height .15s, background .15s, opacity .15s;
+  box-shadow: 0 0 10px var(--cyan), 0 0 20px rgba(0,245,255,.4);
+  mix-blend-mode: screen;
+}
+#cur2 {
+  position: fixed;
+  width: 30px; height: 30px;
+  border: 1px solid rgba(0,245,255,.4);
+  border-radius: 0;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%,-50%);
+  transition: transform .1s ease, width .2s, height .2s, border-color .2s;
+}
+body:has(a:hover) #cur, body:has(button:hover) #cur { width: 16px; height: 16px; background: var(--pink); box-shadow: 0 0 10px var(--pink), 0 0 20px rgba(255,0,128,.4); }
+body:has(a:hover) #cur2, body:has(button:hover) #cur2 { width: 50px; height: 50px; border-color: rgba(255,0,128,.5); }
 
-    <!-- Font Awesome 6 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+#bg-canvas {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+}
+.grid-overlay {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,245,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,245,255,.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.scanlines {
+  position: fixed; inset: 0; z-index: 9990; pointer-events: none;
+  background: repeating-linear-gradient(0deg,
+    transparent, transparent 2px,
+    rgba(0,0,0,.04) 2px, rgba(0,0,0,.04) 4px);
+}
+.vignette {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.75) 100%);
+}
 
-    <!-- AOS Animation -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+@keyframes glitch1 {
+  0%,100%{clip-path:inset(0 0 98% 0);transform:translateX(0)}
+  20%{clip-path:inset(20% 0 60% 0);transform:translateX(-4px)}
+  40%{clip-path:inset(50% 0 30% 0);transform:translateX(4px)}
+  60%{clip-path:inset(80% 0 5% 0);transform:translateX(-2px)}
+}
+@keyframes glitch2 {
+  0%,100%{clip-path:inset(0 0 98% 0);transform:translateX(0)}
+  20%{clip-path:inset(60% 0 20% 0);transform:translateX(4px)}
+  40%{clip-path:inset(10% 0 75% 0);transform:translateX(-4px)}
+  60%{clip-path:inset(40% 0 40% 0);transform:translateX(2px)}
+}
+@keyframes flicker { 0%,100%{opacity:1}96%{opacity:1}97%{opacity:.7}98%{opacity:1}99%{opacity:.8} }
+.glitch-wrap { position: relative; display: inline-block; }
+.glitch-wrap::before, .glitch-wrap::after {
+  content: attr(data-text);
+  position: absolute; top: 0; left: 0; width: 100%;
+  font-family: inherit; font-size: inherit; font-weight: inherit;
+  letter-spacing: inherit; line-height: inherit;
+}
+.glitch-wrap::before { color: var(--pink); animation: glitch1 4s infinite linear; opacity: .7; }
+.glitch-wrap::after  { color: var(--cyan); animation: glitch2 4s infinite linear; opacity: .7; }
+@keyframes neon-pulse {
+  0%,100%{text-shadow:0 0 7px currentColor,0 0 14px currentColor,0 0 28px currentColor}
+  50%{text-shadow:0 0 4px currentColor,0 0 8px currentColor,0 0 16px currentColor}
+}
 
-    <link rel="stylesheet" href="asset/style.css">
+#bootScreen {
+  position: fixed; inset: 0; z-index: 9500;
+  background: var(--bg);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  overflow-y: auto;
+  padding: 32px 16px;
+  gap: 0;
+  animation: flicker 8s infinite;
+}
+/* inner wrapper agar konten tidak terpotong di layar pendek */
+#bootInner {
+  display: flex; flex-direction: column;
+  align-items: center;
+  width: 100%; max-width: 600px;
+  gap: 0;
+}
+.boot-logo {
+  font-family: var(--font-h);
+  font-size: clamp(26px, 6vw, 64px);
+  font-weight: 900;
+  letter-spacing: 6px;
+  color: var(--cyan);
+  text-shadow: 0 0 10px var(--cyan), 0 0 30px rgba(0,245,255,.5);
+  animation: neon-pulse 2s ease-in-out infinite;
+  margin-bottom: 4px;
+}
+.boot-sub {
+  font-family: var(--font-m);
+  font-size: clamp(8px, 1.5vw, 11px);
+  color: var(--pink);
+  letter-spacing: 5px;
+  text-shadow: 0 0 8px var(--pink);
+  margin-bottom: 22px;
+}
+.boot-story {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid rgba(0,245,255,.15);
+  padding: 18px 22px;
+  margin-bottom: 20px;
+  font-family: var(--font-m);
+  font-size: clamp(10px, 1.4vw, 12px);
+  color: var(--dim);
+  line-height: 1.75;
+  text-align: left;
+}
+.boot-story .hl { color: var(--cyan); }
+.boot-story .hl2 { color: var(--green); }
+.boot-story .hl3 { color: var(--pink); }
+
+.boot-bar-wrap { width: 100%; margin-bottom: 18px; }
+.boot-bar-label {
+  font-family: var(--font-m);
+  font-size: 9px;
+  color: var(--dim);
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+.boot-bar-track { height: 3px; background: var(--border); position: relative; overflow: hidden; }
+.boot-bar-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--purple), var(--cyan));
+  box-shadow: 0 0 10px var(--cyan);
+  transition: width .05s linear;
+}
+
+.btn-boot {
+  display: none;
+  font-family: var(--font-h);
+  font-size: clamp(9px, 1.5vw, 12px);
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--bg);
+  background: var(--cyan);
+  border: none;
+  padding: 14px 52px;
+  cursor: pointer;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  box-shadow: 0 0 20px rgba(0,245,255,.6), 0 0 40px rgba(0,245,255,.2);
+  transition: transform .12s, box-shadow .12s;
+  margin-top: 4px;
+}
+.btn-boot:hover { transform: scale(1.04); box-shadow: 0 0 30px rgba(0,245,255,.9), 0 0 60px rgba(0,245,255,.3); }
+.btn-boot:active { transform: scale(.97); }
+
+.boot-hint {
+  font-family: var(--font-m);
+  font-size: 9px;
+  color: var(--dim);
+  letter-spacing: 2px;
+  margin-top: 10px;
+  animation: blink 1.4s step-end infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+#nav {
+  display: none;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 800;
+  background: rgba(3,2,10,.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0,245,255,.15);
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 32px; gap: 16px; flex-wrap: wrap;
+}
+.nav-brand {
+  font-family: var(--font-h);
+  font-size: clamp(10px, 1.6vw, 13px);
+  font-weight: 700;
+  color: var(--cyan);
+  text-shadow: 0 0 10px var(--cyan);
+  letter-spacing: 3px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.nav-links { display: flex; gap: 2px; flex-wrap: wrap; }
+.nav-links a {
+  font-family: var(--font-m);
+  font-size: clamp(8px, 1.1vw, 10px);
+  color: var(--dim);
+  text-decoration: none;
+  padding: 8px 14px;
+  letter-spacing: 1px;
+  border-bottom: 2px solid transparent;
+  transition: color .2s, border-color .2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--cyan); border-color: var(--cyan); }
+
+#mainContent { display: none; }
+.wrap { max-width: 1160px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 10; }
+section { padding: 110px 0 80px; position: relative; z-index: 10; }
+
+.sec-eyebrow {
+  font-family: var(--font-m);
+  font-size: 10px;
+  color: var(--cyan);
+  letter-spacing: 5px;
+  margin-bottom: 10px;
+  opacity: .6;
+}
+.sec-title {
+  font-family: var(--font-h);
+  font-size: clamp(20px, 4vw, 36px);
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: var(--white);
+  margin-bottom: 60px;
+  position: relative;
+}
+.sec-title .accent { color: var(--cyan); }
+.sec-title::after {
+  content: '';
+  display: block;
+  width: 60px; height: 2px;
+  background: linear-gradient(90deg, var(--cyan), transparent);
+  margin-top: 16px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 28px;
+  position: relative;
+  transition: border-color .3s, transform .3s;
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: -1px; right: 13px; width: 20px; height: 1px;
+  background: var(--border);
+  transform: rotate(45deg) translateX(7px);
+  transform-origin: right;
+}
+.card:hover { border-color: rgba(0,245,255,.4); transform: translateY(-4px); }
+.card:hover::before { background: rgba(0,245,255,.4); }
+
+.card-cyan   { border-color: rgba(0,245,255,.2); }
+.card-cyan:hover { border-color: var(--cyan); box-shadow: 0 0 30px rgba(0,245,255,.1); }
+.card-pink   { border-color: rgba(255,0,128,.2); }
+.card-pink:hover { border-color: var(--pink); box-shadow: 0 0 30px rgba(255,0,128,.1); }
+.card-purple { border-color: rgba(157,0,255,.2); }
+.card-purple:hover { border-color: var(--purple); box-shadow: 0 0 30px rgba(157,0,255,.1); }
+.card-green  { border-color: rgba(0,255,136,.2); }
+.card-green:hover { border-color: var(--green); box-shadow: 0 0 30px rgba(0,255,136,.1); }
+.card-yellow { border-color: rgba(245,230,66,.2); }
+.card-yellow:hover { border-color: var(--yellow); box-shadow: 0 0 30px rgba(245,230,66,.1); }
+
+#hero { min-height: 100vh; display: flex; align-items: center; padding-top: 80px; }
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 64px;
+  align-items: center;
+  width: 100%;
+}
+@media(max-width:860px){ .hero-grid { grid-template-columns:1fr; gap:48px; } }
+
+.hero-eyebrow {
+  font-family: var(--font-m);
+  font-size: clamp(10px,1.5vw,12px);
+  color: var(--cyan);
+  letter-spacing: 5px;
+  margin-bottom: 18px;
+  opacity: .8;
+}
+.hero-name {
+  font-family: var(--font-h);
+  font-size: clamp(34px, 7vw, 72px);
+  font-weight: 900;
+  letter-spacing: 3px;
+  line-height: 1.1;
+  color: var(--white);
+  margin-bottom: 12px;
+}
+.hero-name .line2 {
+  color: var(--cyan);
+  text-shadow: 0 0 12px rgba(0,245,255,.5);
+  display: block;
+}
+.hero-role {
+  font-family: var(--font-m);
+  font-size: clamp(12px, 2vw, 16px);
+  color: var(--pink);
+  letter-spacing: 3px;
+  margin-bottom: 28px;
+  text-shadow: 0 0 10px rgba(255,0,128,.5);
+  min-height: 1.5em;
+}
+.hero-desc {
+  font-family: var(--font-b);
+  font-size: clamp(15px, 2.2vw, 18px);
+  color: var(--dim);
+  line-height: 1.9;
+  margin-bottom: 36px;
+  font-weight: 400;
+  max-width: 520px;
+}
+.hero-desc strong { color: var(--white); font-weight: 600; }
+
+.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+
+.btn-cyber {
+  font-family: var(--font-h);
+  font-size: clamp(8px, 1.3vw, 11px);
+  font-weight: 700;
+  letter-spacing: 2px;
+  padding: 14px 30px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform .15s, box-shadow .15s;
+  clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+}
+.btn-cyber:active { transform: scale(.96); }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
+  color: var(--bg);
+  box-shadow: 0 0 20px rgba(0,245,255,.4);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(0,245,255,.6); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--cyan);
+  border: 1px solid var(--cyan) !important;
+  box-shadow: inset 0 0 20px rgba(0,245,255,.05);
+  clip-path: none;
+}
+.btn-outline:hover { background: rgba(0,245,255,.08); box-shadow: 0 0 20px rgba(0,245,255,.2); transform: translateY(-2px); }
+
+.hero-right { display: flex; flex-direction: column; align-items: center; gap: 28px; }
+
+.photo-frame {
+  position: relative;
+  width: 260px; height: 300px;
+  flex-shrink: 0;
+}
+.photo-frame::before {
+  content: '';
+  position: absolute; inset: -1px;
+  background: linear-gradient(135deg, var(--cyan), var(--purple), var(--pink));
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+  z-index: 0;
+}
+.photo-frame::after {
+  content: '';
+  position: absolute; inset: 2px;
+  background: var(--bg2);
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+  z-index: 1;
+}
+.photo-inner {
+  position: absolute; inset: 2px; z-index: 2;
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+  overflow: hidden;
+}
+.photo-inner img { width: 100%; height: 100%; object-fit: cover; object-position: center top; filter: saturate(1.1) contrast(1.05); }
+.photo-no-img { width: 100%; height: 100%; background: var(--bg3); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px; }
+.photo-no-img span:first-child { font-size: 56px; opacity: .3; }
+.photo-no-img span:last-child { font-family: var(--font-m); font-size: 9px; color: var(--dim); letter-spacing: 2px; text-align: center; padding: 0 16px; }
+.photo-scan {
+  position: absolute; left: 2px; right: 2px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  z-index: 3;
+  animation: scan 3s ease-in-out infinite;
+}
+@keyframes scan { 0% { top: 2px; opacity: .8; } 100% { top: calc(100% - 4px); opacity: 0; } }
+.photo-corner { position: absolute; width: 12px; height: 12px; z-index: 4; }
+.photo-corner.tl { top: -1px; left: -1px; border-top: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
+.photo-corner.tr { top: -1px; right: -1px; border-top: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+.photo-corner.bl { bottom: -1px; left: -1px; border-bottom: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
+.photo-corner.br { bottom: -1px; right: -1px; border-bottom: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+
+.hero-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; width: 100%; }
+.stat-box { background: var(--bg3); border: 1px solid var(--border); padding: 16px 12px; text-align: center; transition: border-color .2s; }
+.stat-box:hover { border-color: var(--cyan); }
+.stat-num { font-family: var(--font-h); font-size: clamp(18px, 3vw, 26px); font-weight: 900; color: var(--cyan); text-shadow: 0 0 10px rgba(0,245,255,.5); display: block; }
+.stat-lbl { font-family: var(--font-m); font-size: 8px; color: var(--dim); letter-spacing: 1px; margin-top: 6px; display: block; }
+
+/* ── ABOUT (sekarang 3 kolom: biodata | cerita | organisasi) ── */
+#about { padding-top: 60px; }
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+}
+@media(max-width:1000px){ .about-grid { grid-template-columns: 1fr 1fr; } }
+@media(max-width:640px) { .about-grid { grid-template-columns: 1fr; } }
+
+.about-card-title {
+  font-family: var(--font-h);
+  font-size: clamp(10px, 1.6vw, 13px);
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--cyan);
+  margin-bottom: 22px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.about-text { font-family: var(--font-b); font-size: clamp(14px, 1.9vw, 16px); color: var(--dim); line-height: 1.9; font-weight: 400; }
+.about-text strong { color: var(--white); font-weight: 600; }
+.about-text p + p { margin-top: 14px; }
+
+.info-table { width: 100%; border-collapse: collapse; }
+.info-table tr { border-bottom: 1px solid var(--border); }
+.info-table tr:last-child { border-bottom: none; }
+.info-table td { padding: 10px 0; font-family: var(--font-b); font-size: clamp(12px,1.7vw,14px); }
+.info-table td:first-child { font-family: var(--font-m); font-size: 9px; color: var(--dim); letter-spacing: 2px; width: 40%; vertical-align: top; padding-top: 12px; }
+.info-table td:last-child { color: var(--white); font-weight: 500; }
+
+.status-dot {
+  display: inline-block; width: 8px; height: 8px;
+  background: var(--green); border-radius: 50%;
+  box-shadow: 0 0 8px var(--green);
+  animation: pulse-dot 2s ease-in-out infinite;
+  margin-right: 8px; vertical-align: middle;
+}
+@keyframes pulse-dot { 0%,100%{box-shadow:0 0 8px var(--green)} 50%{box-shadow:0 0 16px var(--green),0 0 24px rgba(0,255,136,.3)} }
+
+/* ── ORGANISASI cards ── */
+.org-list { display: flex; flex-direction: column; gap: 16px; }
+.org-item {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 14px 16px;
+  transition: border-color .2s, transform .2s;
+}
+.org-item:hover { border-color: var(--yellow); transform: translateX(4px); }
+.org-item-header { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+.org-badge {
+  font-family: var(--font-h);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 3px 10px;
+  border: 1px solid;
+}
+.org-badge-red   { color: #ff4444; border-color: rgba(255,68,68,.4); background: rgba(255,68,68,.06); }
+.org-badge-blue  { color: #4499ff; border-color: rgba(68,153,255,.4); background: rgba(68,153,255,.06); }
+.org-badge-green { color: var(--green); border-color: rgba(0,255,136,.4); background: rgba(0,255,136,.06); }
+.org-name {
+  font-family: var(--font-h);
+  font-size: clamp(9px, 1.4vw, 11px);
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--white);
+}
+.org-role {
+  font-family: var(--font-m);
+  font-size: 9px;
+  color: var(--cyan);
+  letter-spacing: 1.5px;
+  margin-bottom: 4px;
+}
+.org-desc {
+  font-family: var(--font-b);
+  font-size: clamp(12px, 1.6vw, 13px);
+  color: var(--dim);
+  line-height: 1.65;
+  font-weight: 400;
+}
+
+/* ── VIDEO INTRO (diperkecil, max-width, centered) ── */
+#intro-video { padding-top: 40px; }
+.video-container {
+  max-width: 680px;
+  margin: 0 auto;
+}
+.video-wrap {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  border: 1px solid rgba(0,245,255,.2);
+  box-shadow: 0 0 30px rgba(0,245,255,.06), 0 0 60px rgba(157,0,255,.04);
+}
+.video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+.video-label { font-family: var(--font-m); font-size: 10px; color: var(--pink); letter-spacing: 4px; margin-bottom: 14px; text-shadow: 0 0 8px var(--pink); }
+
+/* ── SKILLS ── */
+#skills { padding-top: 60px; }
+.skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap: 20px; }
+.skill-card { padding: 22px; }
+.skill-name { font-family: var(--font-m); font-size: 11px; color: var(--white); letter-spacing: 2px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
+.skill-pct { color: var(--cyan); font-size: 13px; text-shadow: 0 0 8px var(--cyan); }
+.skill-track { height: 4px; background: var(--border); position: relative; overflow: hidden; }
+.skill-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--purple), var(--cyan)); box-shadow: 0 0 10px var(--cyan); transition: width 1.4s cubic-bezier(.25,1,.5,1); position: relative; }
+.skill-fill::after { content: ''; position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: 6px; height: 6px; background: var(--cyan); border-radius: 50%; box-shadow: 0 0 8px var(--cyan); }
+
+/* ── PROJECTS ── */
+#projects { padding-top: 60px; }
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px,1fr)); gap: 24px; }
+.project-card { padding: 0; overflow: hidden; }
+.project-img { width: 100%; height: 190px; overflow: hidden; position: relative; background: var(--bg3); }
+.project-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, var(--card) 100%); }
+.project-img img { width: 100%; height: 100%; object-fit: cover; filter: saturate(1.2) contrast(1.05); transition: transform .5s; }
+.project-card:hover .project-img img { transform: scale(1.06); }
+.project-img-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 52px; opacity: .15; background: linear-gradient(135deg, var(--bg3), var(--bg2)); }
+.project-body { padding: 22px 24px 24px; }
+.project-name { font-family: var(--font-h); font-size: clamp(10px,1.5vw,12px); font-weight: 700; color: var(--white); letter-spacing: 1.5px; margin-bottom: 10px; line-height: 1.5; }
+.project-desc { font-family: var(--font-b); font-size: clamp(14px,2vw,15px); color: var(--dim); line-height: 1.7; margin-bottom: 18px; font-weight: 400; }
+.tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.tag { font-family: var(--font-m); font-size: 9px; padding: 4px 12px; border: 1px solid; letter-spacing: 1px; }
+.tag-c { color: var(--cyan); border-color: rgba(0,245,255,.3); }
+.tag-p { color: var(--purple); border-color: rgba(157,0,255,.3); }
+.tag-g { color: var(--green); border-color: rgba(0,255,136,.3); }
+.tag-y { color: var(--yellow); border-color: rgba(245,230,66,.3); }
+.tag-pk{ color: var(--pink); border-color: rgba(255,0,128,.3); }
+
+/* ── YOUTUBE ── */
+#youtube { padding-top: 60px; }
+.yt-grid { display: grid; grid-template-columns: 280px 1fr; gap: 28px; align-items: start; }
+@media(max-width:760px){ .yt-grid { grid-template-columns:1fr; } }
+.yt-channel { background: var(--card); border: 1px solid rgba(255,0,128,.2); padding: 32px 24px; text-align: center; clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px)); }
+.yt-icon-wrap { width: 64px; height: 64px; background: rgba(255,0,0,.1); border: 1px solid rgba(255,0,0,.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 28px; }
+.yt-chname { font-family: var(--font-h); font-size: 10px; font-weight: 700; color: var(--white); letter-spacing: 2px; margin-bottom: 24px; }
+.yt-stats-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+.yt-stat { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: var(--bg3); border: 1px solid var(--border); }
+.yt-stat-lbl { font-family: var(--font-m); font-size: 8px; color: var(--dim); letter-spacing: 1.5px; }
+.yt-stat-val { font-family: var(--font-h); font-size: 14px; color: var(--pink); text-shadow: 0 0 8px rgba(255,0,128,.5); }
+.yt-video-panel { display: flex; flex-direction: column; gap: 16px; }
+.yt-vid-label { font-family: var(--font-m); font-size: 10px; color: var(--pink); letter-spacing: 4px; }
+.yt-vid-frame { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border: 1px solid rgba(255,0,128,.2); box-shadow: 0 0 30px rgba(255,0,128,.06); }
+.yt-vid-frame iframe { position: absolute; top:0; left:0; width:100%; height:100%; border:none; }
+
+/* ── SOCIAL ── */
+#social { padding-top: 60px; }
+.social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 20px; }
+.social-card { padding: 32px 24px; text-align: center; cursor: pointer; transition: transform .2s, border-color .2s; }
+.social-card:hover { transform: translateY(-6px); }
+.social-icon-label { font-size: 36px; margin-bottom: 14px; display: block; filter: drop-shadow(0 0 12px currentColor); }
+.social-name { font-family: var(--font-h); font-size: 11px; font-weight: 700; letter-spacing: 2px; margin-bottom: 14px; }
+.social-count { font-family: var(--font-h); font-size: clamp(20px, 4vw, 28px); font-weight: 900; display: block; margin-bottom: 6px; }
+.social-handle { font-family: var(--font-m); font-size: 9px; color: var(--dim); letter-spacing: 1.5px; }
+
+/* ── GAME ── */
+#game { padding-top: 60px; }
+.game-wrap { max-width: 720px; margin: 0 auto; background: var(--card); border: 1px solid rgba(0,245,255,.2); padding: 24px; box-shadow: 0 0 40px rgba(0,245,255,.05); clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px)); }
+.game-hud { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.game-hud span { font-family: var(--font-m); font-size: 11px; color: var(--cyan); letter-spacing: 2px; }
+#gameCanvas { width: 100%; height: 150px; display: block; background: #040310; border: 1px solid rgba(0,245,255,.1); image-rendering: pixelated; }
+.game-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; flex-wrap: wrap; gap: 12px; }
+.btn-game { font-family: var(--font-h); font-size: 10px; font-weight: 700; letter-spacing: 2px; background: var(--cyan); color: var(--bg); border: none; padding: 12px 28px; cursor: pointer; clip-path: polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%); box-shadow: 0 0 16px rgba(0,245,255,.4); transition: transform .1s; }
+.btn-game:hover { transform: scale(1.04); }
+.btn-game:active { transform: scale(.96); }
+.game-hint { font-family: var(--font-m); font-size: 9px; color: var(--dim); letter-spacing: 1.5px; }
+
+footer {
+  position: relative; z-index: 10;
+  border-top: 1px solid var(--border);
+  padding: 48px 32px;
+  text-align: center;
+  background: var(--bg2);
+}
+.footer-name { font-family: var(--font-h); font-size: clamp(16px, 3vw, 24px); font-weight: 900; color: var(--cyan); letter-spacing: 4px; text-shadow: 0 0 14px rgba(0,245,255,.4); margin-bottom: 10px; }
+.footer-sub { font-family: var(--font-m); font-size: 10px; color: var(--dim); letter-spacing: 3px; margin-bottom: 24px; }
+.footer-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+.footer-links a { font-family: var(--font-m); font-size: 9px; color: var(--dim); text-decoration: none; letter-spacing: 2px; transition: color .2s; }
+.footer-links a:hover { color: var(--cyan); }
+.footer-cr { font-family: var(--font-m); font-size: 8px; color: rgba(100,96,122,.5); letter-spacing: 2px; }
+
+#scrollBar { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 9000; background: transparent; }
+#scrollFill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--purple), var(--cyan), var(--pink)); box-shadow: 0 0 6px var(--cyan); transition: width .1s; }
+
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-left { opacity:0; transform:translateX(-30px); transition: opacity .7s, transform .7s; }
+.reveal-left.visible { opacity:1; transform:translateX(0); }
+.reveal-right { opacity:0; transform:translateX(30px); transition: opacity .7s, transform .7s; }
+.reveal-right.visible { opacity:1; transform:translateX(0); }
+
+#audioBtn {
+  position: fixed; bottom: 24px; right: 24px; z-index: 8000;
+  background: var(--bg3); border: 1px solid var(--border); color: var(--dim);
+  font-family: var(--font-m); font-size: 9px; letter-spacing: 1px;
+  padding: 10px 14px; cursor: pointer; transition: color .2s, border-color .2s; display: none;
+}
+#audioBtn:hover { color: var(--cyan); border-color: var(--cyan); }
+#audioBtn.on { color: var(--cyan); border-color: rgba(0,245,255,.4); }
+
+.sec-divider {
+  position: relative; z-index: 10;
+  display: flex; align-items: center; gap: 16px;
+  padding: 0 32px; max-width: 1160px; margin: 0 auto;
+  opacity: .25;
+}
+.sec-divider::before, .sec-divider::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--cyan), transparent); }
+.sec-divider span { font-family: var(--font-m); font-size: 8px; color: var(--cyan); letter-spacing: 4px; white-space: nowrap; }
+
+@media(max-width:560px){
+  .wrap { padding: 0 16px; }
+  section { padding: 80px 0 60px; }
+  .hero-btns { flex-direction: column; }
+  .btn-cyber { width: 100%; justify-content: center; }
+  .photo-frame { width: 200px; height: 230px; }
+}
+</style>
 </head>
-
 <body>
 
-    <header>
-        <div class="container">
-            <nav class="navbar py-2 py-md-3">
-                <a class="navbar-brand" href="#">
-                    <h2 class="logo-text">Ivan Kurniawan</h2>
-                </a>
-                <div class="theme-toggle" id="themeToggle">
-                    <i class="fas fa-sun" id="sunIcon" style="display: none;"></i>
-                    <i class="fas fa-moon" id="moonIcon"></i>
-                    <span class="ms-1 ms-md-2" id="themeText">Gelap</span>
-                </div>
-            </nav>
+<div id="cur"></div>
+<div id="cur2"></div>
+<canvas id="bg-canvas"></canvas>
+<div class="grid-overlay"></div>
+<div class="scanlines"></div>
+<div class="vignette"></div>
+<div id="scrollBar"><div id="scrollFill"></div></div>
+<button id="audioBtn">SFX OFF</button>
+
+<!-- BOOT SCREEN -->
+<div id="bootScreen">
+  <div id="bootInner">
+    <div class="boot-logo glitch-wrap" data-text="IVAN DEV">IVAN DEV</div>
+    <div class="boot-sub">KURNIAWAN // PORTFOLIO v2.0</div>
+
+    <div class="boot-story">
+      <div style="margin-bottom:10px;"><span class="hl">// BIODATA PLAYER</span></div>
+      Nama saya <span class="hl">Ivan Kurniawan</span>, seorang developer muda kelahiran
+      <span class="hl2">Karanganyar, 27 Februari 2009</span>.<br><br>
+      Saat ini aktif sebagai siswa <span class="hl">SMKN 2 Karanganyar</span> jurusan
+      Rekayasa Perangkat Lunak. Sejak kelas 10, saya sudah mengerjakan berbagai
+      proyek web nyata — dari portal berita, sistem absensi, hingga platform keuangan digital.<br><br>
+      Saya juga aktif sebagai <span class="hl3">content creator</span> di YouTube dan TikTok,
+      berbagi konten seputar dunia coding dan teknologi.<br><br>
+      <span class="hl2">// Siap masuk ke dunia saya?</span>
+    </div>
+
+    <div class="boot-bar-wrap">
+      <div class="boot-bar-label">INITIALIZING PORTFOLIO<span id="bootPct"> 0%</span></div>
+      <div class="boot-bar-track"><div class="boot-bar-fill" id="bootFill"></div></div>
+    </div>
+
+    <button class="btn-boot" id="btnBoot">ENTER SYSTEM</button>
+    <div class="boot-hint" id="bootHint">LOADING...</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<header id="nav">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-brand">IK.DEV</a>
+    <nav class="nav-links">
+      <a href="#hero">HOME</a>
+      <a href="#about">ABOUT</a>
+      <a href="#intro-video">VIDEO</a>
+      <a href="#skills">SKILLS</a>
+      <a href="#projects">PROJECTS</a>
+      <a href="#youtube">YOUTUBE</a>
+      <a href="#social">SOCIAL</a>
+      <a href="#game">GAME</a>
+    </nav>
+  </div>
+</header>
+
+<main id="mainContent">
+
+<!-- HERO -->
+<section id="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-left">
+        <div class="hero-eyebrow">// FULL-STACK DEVELOPER · CONTENT CREATOR</div>
+        <h1 class="hero-name">IVAN<span class="line2">KURNIAWAN</span></h1>
+        <div class="hero-role" id="typedRole">LOADING...</div>
+        <p class="hero-desc">
+          Pengembang web full-stack & kreator konten digital asal
+          <strong>Karanganyar, Indonesia</strong>. Siswa aktif
+          <strong>SMKN 2 Karanganyar</strong> dengan spesialisasi
+          web modern, Laravel, dan teknologi emerging.
+        </p>
+        <div class="hero-btns">
+          <a href="#projects" class="btn-cyber btn-primary">LIHAT PROYEK</a>
+          <a href="#about" class="btn-cyber btn-outline">TENTANG SAYA</a>
         </div>
-    </header>
+      </div>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="row align-items-center g-4">
-                <div class="col-lg-7 order-2 order-lg-1" data-aos="fade-right">
-                    <div class="hero-badge">
-                        <i class="fas fa-code me-2"></i> Professional Developer
-                    </div>
-                    <h1 class="display-3 fw-bold mb-3">Ivan Kurniawan</h1>
-                    <div class="fs-2 mb-3">
-                        Saya seorang <span class="typed-text" style="color: var(--gradient-start);"></span>
-                    </div>
-                    <p class="lead mb-4" style="color: var(--text-secondary);">
-                        Pengembang web full-stack & kreator konten digital. Lahir di Karanganyar, 27 Februari 2009.
-                        Saat ini aktif sebagai siswa SMKN 2 Karanganyar dengan fokus pengembangan web modern,
-                        game development, dan teknologi emerging.
-                    </p>
-                    <div class="d-flex gap-3 justify-content-center justify-content-lg-start flex-wrap">
-                        <a href="#projects" class="btn btn-gradient">
-                            <i class="fas fa-folder-open me-2"></i>Lihat Proyek
-                        </a>
-                        <a href="#contact" class="btn btn-outline">
-                            <i class="fas fa-envelope me-2"></i>Hubungi Saya
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-5 order-1 order-lg-2" data-aos="fade-left">
-                    <div class="text-center">
-                        <!-- Ganti dengan foto profil yang sudah dihapus background-nya -->
-                        <img src="asset/img/Ivan Dev Iconic Gradient.png" alt="Ivan Kurniawan"
-                            class="profile-img-modern">
-                        <div class="mt-4">
-                            <div class="row g-3">
-                                <div class="col-6">
-                                    <div class="stat-card">
-                                        <div class="stat-number">12+</div>
-                                        <div>Proyek Selesai</div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="stat-card">
-                                        <div class="stat-number">2+</div>
-                                        <div>Tahun Pengalaman</div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="stat-card">
-                                        <i class="fas fa-map-marker-alt me-2" style="color: var(--gradient-start);"></i>
-                                        Karanganyar, Indonesia
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+      <div class="hero-right reveal-right">
+        <div class="photo-frame">
+          <div class="photo-inner">
+            <img src="asset/img/profil.jpeg" alt="Ivan Kurniawan"
+              onerror="this.style.display='none';document.getElementById('photoFallback').style.display='flex'">
+            <div class="photo-no-img" id="photoFallback" style="display:none;">
+              <span>👤</span>
+              <span>GANTI FILE:<br>asset/img/foto-profil.jpg</span>
             </div>
+          </div>
+          <div class="photo-scan"></div>
+          <div class="photo-corner tl"></div>
+          <div class="photo-corner tr"></div>
+          <div class="photo-corner bl"></div>
+          <div class="photo-corner br"></div>
         </div>
-    </section>
 
-    <!-- Skills Section -->
-    <section class="py-5">
-        <div class="container">
-            <div class="text-center mb-5" data-aos="fade-up">
-                <h2 class="section-title">Keahlian Teknis</h2>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-6" data-aos="flip-left">
-                    <div class="stat-card">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span><i class="fab fa-html5 text-danger me-2"></i>HTML/CSS</span>
-                            <span>95%</span>
-                        </div>
-                        <div class="progress"
-                            style="height: 8px; background-color: rgba(59, 130, 246, 0.2); border-radius: 10px;">
-                            <div class="progress-bar"
-                                style="width: 95%; background: linear-gradient(90deg, #3b82f6, #8b5cf6); border-radius: 10px;">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6" data-aos="flip-left" data-aos-delay="100">
-                    <div class="stat-card">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span><i class="fab fa-js text-warning me-2"></i>JavaScript</span>
-                            <span>75%</span>
-                        </div>
-                        <div class="progress" style="height: 8px;">
-                            <div class="progress-bar"
-                                style="width: 75%; background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6" data-aos="flip-left" data-aos-delay="200">
-                    <div class="stat-card">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span><i class="fab fa-php text-info me-2"></i>PHP & Laravel</span>
-                            <span>80%</span>
-                        </div>
-                        <div class="progress" style="height: 8px;">
-                            <div class="progress-bar"
-                                style="width: 80%; background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6" data-aos="flip-left" data-aos-delay="300">
-                    <div class="stat-card">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span><i class="fab fa-bootstrap text-primary me-2"></i>Bootstrap 5</span>
-                            <span>90%</span>
-                        </div>
-                        <div class="progress" style="height: 8px;">
-                            <div class="progress-bar"
-                                style="width: 90%; background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="hero-stats">
+          <div class="stat-box"><span class="stat-num">12+</span><span class="stat-lbl">PROYEK</span></div>
+          <div class="stat-box"><span class="stat-num">2+</span><span class="stat-lbl">THN EXP</span></div>
+          <div class="stat-box"><span class="stat-num">17</span><span class="stat-lbl">USIA</span></div>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Projects Gallery -->
-    <section id="projects" class="py-5">
-        <div class="container">
-            <div class="text-center mb-5" data-aos="fade-up">
-                <h2 class="section-title">Galeri Proyek</h2>
-                <p class="mt-3">Beberapa project unggulan yang telah saya kerjakan</p>
-            </div>
-            <div class="gallery-grid">
-                <div class="gallery-item" data-aos="zoom-in">
-                    <img src="asset/img/Screenshot 2025-12-24 183653.png" class="gallery-img"
-                        alt="Project 1">
-                    <div class="p-4">
-                        <h4>Portal Berita Digital</h4>
-                        <p class="small">Sistem berita real-time dengan admin dashboard lengkap</p>
-                        <span class="badge bg-primary">Laravel</span>
-                        <span class="badge bg-secondary">MySQL</span>
-                    </div>
-                </div>
-                <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
-                    <img src="asset/img/Screenshot 2025-12-24 183802.png" class="gallery-img"
-                        alt="Project 2">
-                    <div class="p-4">
-                        <h4>Aplikasi Catatan Sekolah</h4>
-                        <p class="small">Manajemen tugas dan jadwal untuk siswa modern</p>
-                        <span class="badge bg-primary">JavaScript</span>
-                        <span class="badge bg-secondary">IndexedDB</span>
-                    </div>
-                </div>
-                <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
-                    <img src="asset/img/Screenshot 2025-12-24 184105.png" class="gallery-img"
-                        alt="Project 3">
-                    <div class="p-4">
-                        <h4>Platform Artikel Sekolah </h4>
-                        <p class="small">Tempat berbagi artikel pendidikan interaktif</p>
-                        <span class="badge bg-primary">PHP Native</span>
-                        <span class="badge bg-secondary">Bootstrap</span>
-                    </div>
-                </div>
-                 <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
-                    <img src="asset/img/Screenshot 2026-04-29 091410.png" class="gallery-img"
-                        alt="Project 3">
-                    <div class="p-4">
-                        <h4>Platform Pengajuan PKL </h4>
-                        <p class="small">Tempat Pengajuan PKL</p>
-                        <span class="badge bg-primary"> Laravel</span>
-                        <span class="badge bg-secondary">Mysql</span>
-                    </div>
-                </div>
-                 <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
-                    <img src="asset/img/Screenshot 2026-04-29 091141.png" class="gallery-img"
-                        alt="Project 3">
-                    <div class="p-4">
-                        <h4>Platform Absensi Karangtaruna </h4>
-                        <p class="small">Platform Absensi Karangtaruna</p>
-                        <span class="badge bg-primary">Laravel</span>
-                        <span class="badge bg-secondary">Bootstrap</span>
-                    </div>
-                </div>
-                 <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
-                    <img src="asset/img/Screenshot 2026-04-29 091531.png" class="gallery-img"
-                        alt="Project 3">
-                    <div class="p-4">
-                        <h4>Platform Keuangan Karangtaruna </h4>
-                        <p class="small">Platform Keuangan Karangtaruna</p>
-                        <span class="badge bg-primary">Laravel</span>
-                        <span class="badge bg-secondary">MySQL</span>
-                    </div>
-                </div>
-            </div>
+<div class="sec-divider"><span>ABOUT</span></div>
+
+<!-- ABOUT (3 kolom: biodata | cerita | organisasi) -->
+<section id="about">
+  <div class="wrap">
+    <div class="sec-eyebrow">// PROFIL</div>
+    <div class="sec-title">TENTANG <span class="accent">SAYA</span></div>
+    <div class="about-grid">
+
+      <!-- Kolom 1: Biodata -->
+      <div class="card card-cyan reveal-left">
+        <div class="about-card-title">BIODATA</div>
+        <table class="info-table">
+          <tr><td>NAMA</td><td>Ivan Kurniawan</td></tr>
+          <tr><td>TTL</td><td>Karanganyar, 27 Feb 2009</td></tr>
+          <tr><td>SEKOLAH</td><td>SMKN 2 Karanganyar</td></tr>
+          <tr><td>JURUSAN</td><td>Rekayasa Perangkat Lunak</td></tr>
+          <tr><td>LOKASI</td><td>Karanganyar, Jawa Tengah</td></tr>
+          <tr><td>STATUS</td><td><span class="status-dot"></span>AKTIF</td></tr>
+        </table>
+      </div>
+
+      <!-- Kolom 2: Cerita -->
+      <div class="card card-purple reveal">
+        <div class="about-card-title" style="color:var(--purple);">CERITA SAYA</div>
+        <div class="about-text">
+          <p>
+            Perjalanan saya di dunia coding dimulai sejak awal masuk SMK. Berawal dari rasa penasaran tentang bagaimana website dibuat, saya mulai belajar HTML dan CSS secara otodidak, lalu berkembang ke PHP, Laravel, dan JavaScript.
+          </p>
+          <p>
+            Dalam kurun waktu dua tahun, saya sudah berhasil menyelesaikan lebih dari 12 proyek nyata — sebagian besar digunakan oleh instansi dan organisasi di sekitar Karanganyar.
+          </p>
+          <p>
+            Di luar coding, saya aktif membagikan pengalaman belajar saya melalui konten di YouTube dan TikTok, karena saya percaya bahwa <strong>ilmu terbaik adalah ilmu yang dibagikan</strong>.
+          </p>
         </div>
-    </section>
+      </div>
 
-    <!-- Social Media Section -->
-    <section id="contact" class="py-5">
-        <div class="container">
-            <div class="text-center mb-5" data-aos="fade-up">
-                <h2 class="section-title">Sosial Media</h2>
-                <p class="mt-3">Terhubung dengan saya melalui platform berikut</p>
-            </div>
-            <div class="row g-4">
-                <!-- YouTube -->
-                <div class="col-md-6 col-lg-4" data-aos="flip-left">
-                    <div class="social-card" onclick="window.open('https://youtube.com/@ivankurniawan', '_blank')">
-                        <i class="fab fa-youtube social-icon-large text-danger"></i>
-                        <h3>YouTube</h3>
-                        <div class="follower-count" id="youtubeCount">Memuat...</div>
-                        <p class="text-muted" id="youtubeName">-</p>
-                        <img id="youtubeAvatar" src=""
-                            style="width: 50px; height: 50px; border-radius: 50%; margin-top: 10px; background: transparent;">
-                    </div>
-                </div>
-                <!-- Instagram -->
-                <div class="col-md-6 col-lg-4" data-aos="flip-left" data-aos-delay="100">
-                    <div class="social-card" onclick="window.open('https://www.instagram.com/iv.ntyz?igsh=bTE5czB4ajB2eGQy')">
-                        <i class="fab fa-instagram social-icon-large" style="color: #e4405f;"></i>
-                        <h3>Instagram</h3>
-                        <div class="follower-count" id="instagramCount">Memuat...</div>
-                        <p class="text-muted" id="instagramUsername">@ivn.ty</p>
-                    </div>
-                </div>
-                <!-- TikTok -->
-                <div class="col-md-6 col-lg-4" data-aos="flip-left" data-aos-delay="200">
-                    <div class="social-card" onclick="window.open('https://www.tiktok.com/@user0173726332?_r=1&_t=ZS-95vmH0JeUxY')">
-                        <i class="fab fa-tiktok social-icon-large"></i>
-                        <h3>TikTok</h3>
-                        <div class="follower-count" id="tiktokCount">Memuat...</div>
-                        <p class="text-muted">@user0183173174</p>
-                    </div>
-                </div>
-            </div>
+      <!-- Kolom 3: Organisasi -->
+      <div class="card card-yellow reveal-right">
+        <div class="about-card-title" style="color:var(--yellow);">ORGANISASI</div>
+        <div class="org-list">
 
-            <!-- Latest YouTube Video -->
-            <div class="row mt-5" data-aos="zoom-in-up">
-                <div class="col-lg-8 mx-auto">
-                    <div class="stat-card p-4">
-                        <h4 class="text-center mb-3">
-                            <i class="fab fa-youtube text-danger me-2"></i>Video Terbaru
-                        </h4>
-                        <div class="ratio ratio-16x9 rounded-4 overflow-hidden">
-                            <iframe id="latestVideo" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0"
-                                allowfullscreen></iframe>
-                        </div>
-                    </div>
-                </div>
+          <!-- PMR -->
+          <div class="org-item">
+            <div class="org-item-header">
+              <span class="org-badge org-badge-red">PMR</span>
+              <span class="org-name">PALANG MERAH REMAJA</span>
             </div>
+            <div class="org-role">ANGGOTA AKTIF</div>
+            <div class="org-desc">
+              Aktif dalam kegiatan kepalangmerahan, pertolongan pertama, dan bakti sosial di lingkungan sekolah maupun masyarakat.
+            </div>
+          </div>
+
+          <!-- KIR -->
+          <div class="org-item">
+            <div class="org-item-header">
+              <span class="org-badge org-badge-blue">KIR</span>
+              <span class="org-name">KARYA ILMIAH REMAJA</span>
+            </div>
+            <div class="org-role">ANGGOTA AKTIF</div>
+            <div class="org-desc">
+              Mengembangkan kemampuan riset dan inovasi teknologi melalui karya ilmiah, penelitian, dan kompetisi sains tingkat sekolah.
+            </div>
+          </div>
+
+          <!-- Karangtaruna -->
+          <div class="org-item">
+            <div class="org-item-header">
+              <span class="org-badge org-badge-green">KT</span>
+              <span class="org-name">KARANGTARUNA</span>
+            </div>
+            <div class="org-role">ANGGOTA — DEV TEKNOLOGI</div>
+            <div class="org-desc">
+              Berkontribusi aktif dalam organisasi kepemudaan desa, termasuk membangun sistem absensi dan keuangan digital untuk organisasi.
+            </div>
+          </div>
+
         </div>
-    </section>
+      </div>
 
-    <!-- Footer -->
-    <footer class="py-5 mt-5" style="background: var(--bg-secondary); border-top: 1px solid var(--border-color);">
-        <div class="container text-center">
-            <p>&copy; 2025 Ivan Kurniawan | Portfolio Professional</p>
-            <div class="d-flex justify-content-center gap-3">
-                <a href="#" class="text-decoration-none" style="color: var(--text-secondary);">
-                    <i class="fab fa-github fa-2x"></i>
-                </a>
-                <a href="#" class="text-decoration-none" style="color: var(--text-secondary);">
-                    <i class="fab fa-linkedin fa-2x"></i>
-                </a>
-                <a href="#" class="text-decoration-none" style="color: var(--text-secondary);">
-                    <i class="fab fa-twitter fa-2x"></i>
-                </a>
-            </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-divider"><span>VIDEO</span></div>
+
+<!-- INTRO VIDEO (diperkecil & centered) -->
+<section id="intro-video">
+  <div class="wrap">
+    <div class="sec-eyebrow">// PERKENALAN</div>
+    <div class="sec-title">VIDEO <span class="accent">SAYA</span></div>
+    <div class="reveal">
+      <div class="video-container">
+        <div class="video-label">LATEST VIDEO FROM CHANNEL</div>
+        <div class="video-wrap">
+          <iframe id="introVideoFrame" src="about:blank"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen title="Video Ivan Kurniawan"></iframe>
         </div>
-    </footer>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+<div class="sec-divider"><span>SKILLS</span></div>
 
-    <script>
-        AOS.init({
-            duration: 800,
-            once: true,
-            offset: 100
-        });
+<!-- SKILLS -->
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-eyebrow">// KEMAMPUAN</div>
+    <div class="sec-title">TECH <span class="accent">STACK</span></div>
+    <div class="skills-grid">
+      <div class="card card-cyan skill-card reveal">
+        <div class="skill-name">HTML / CSS <span class="skill-pct">95%</span></div>
+        <div class="skill-track"><div class="skill-fill" data-w="95"></div></div>
+      </div>
+      <div class="card card-purple skill-card reveal">
+        <div class="skill-name">JAVASCRIPT <span class="skill-pct" style="color:var(--purple);text-shadow:0 0 8px var(--purple);">75%</span></div>
+        <div class="skill-track"><div class="skill-fill" data-w="75" style="background:linear-gradient(90deg,var(--pink),var(--purple));box-shadow:0 0 10px var(--purple);"></div></div>
+      </div>
+      <div class="card card-pink skill-card reveal">
+        <div class="skill-name">PHP &amp; LARAVEL <span class="skill-pct" style="color:var(--pink);text-shadow:0 0 8px var(--pink);">80%</span></div>
+        <div class="skill-track"><div class="skill-fill" data-w="80" style="background:linear-gradient(90deg,var(--purple),var(--pink));box-shadow:0 0 10px var(--pink);"></div></div>
+      </div>
+      <div class="card card-green skill-card reveal">
+        <div class="skill-name">BOOTSTRAP 5 <span class="skill-pct" style="color:var(--green);text-shadow:0 0 8px var(--green);">90%</span></div>
+        <div class="skill-track"><div class="skill-fill" data-w="90" style="background:linear-gradient(90deg,var(--cyan),var(--green));box-shadow:0 0 10px var(--green);"></div></div>
+      </div>
+      <div class="card card-cyan skill-card reveal">
+        <div class="skill-name">MYSQL <span class="skill-pct">70%</span></div>
+        <div class="skill-track"><div class="skill-fill" data-w="70"></div></div>
+      </div>
+      <div class="card card-purple skill-card reveal">
+        <div class="skill-name">GAME DEV <span class="skill-pct" style="color:var(--purple);text-shadow:0 0 8px var(--purple);">50%</span></div>
+        <div class="skill-track"><div class="skill-fill" data-w="50" style="background:linear-gradient(90deg,var(--pink),var(--purple));box-shadow:0 0 10px var(--purple);"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        new Typed('.typed-text', {
-            strings: ['Web Developer', 'Content Creator', 'Game Developer', 'Tech Enthusiast'],
-            typeSpeed: 70,
-            backSpeed: 40,
-            loop: true
-        });
+<div class="sec-divider"><span>PROJECTS</span></div>
 
-        // Dark/Light Mode
-        const themeToggle = document.getElementById('themeToggle');
-        const sunIcon = document.getElementById('sunIcon');
-        const moonIcon = document.getElementById('moonIcon');
-        const themeText = document.getElementById('themeText');
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-eyebrow">// PORTOFOLIO</div>
+    <div class="sec-title">PROJECT <span class="accent">SAYA</span></div>
+    <div class="projects-grid">
 
-        function setTheme(theme) {
-            if (theme === 'light') {
-                document.body.classList.add('light-mode');
-                sunIcon.style.display = 'inline-block';
-                moonIcon.style.display = 'none';
-                themeText.textContent = 'Terang';
-                localStorage.setItem('theme', 'light');
-            } else {
-                document.body.classList.remove('light-mode');
-                sunIcon.style.display = 'none';
-                moonIcon.style.display = 'inline-block';
-                themeText.textContent = 'Gelap';
-                localStorage.setItem('theme', 'dark');
-            }
-        }
+      <div class="card card-cyan project-card reveal">
+        <div class="project-img">
+          <img src="asset/img/Screenshot 2025-12-24 183653.png" alt="Portal Berita" onerror="this.style.display='none'">
+          <div class="project-img-ph">📰</div>
+        </div>
+        <div class="project-body">
+          <div class="project-name">PORTAL BERITA DIGITAL</div>
+          <div class="project-desc">Sistem berita real-time dengan admin dashboard lengkap dan manajemen konten modern.</div>
+          <div class="tags"><span class="tag tag-g">LARAVEL</span><span class="tag tag-c">MYSQL</span></div>
+        </div>
+      </div>
 
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light') {
-            setTheme('light');
-        } else {
-            setTheme('dark');
-        }
+      <div class="card card-purple project-card reveal">
+        <div class="project-img">
+          <img src="asset/img/Screenshot 2025-12-24 183802.png" alt="Catatan Sekolah" onerror="this.style.display='none'">
+          <div class="project-img-ph">📓</div>
+        </div>
+        <div class="project-body">
+          <div class="project-name">APLIKASI CATATAN SEKOLAH</div>
+          <div class="project-desc">Manajemen tugas dan jadwal untuk siswa modern dengan penyimpanan lokal.</div>
+          <div class="tags"><span class="tag tag-y">JAVASCRIPT</span><span class="tag tag-p">INDEXEDDB</span></div>
+        </div>
+      </div>
 
-        themeToggle.addEventListener('click', () => {
-            if (document.body.classList.contains('light-mode')) {
-                setTheme('dark');
-            } else {
-                setTheme('light');
-            }
-        });
+      <div class="card card-pink project-card reveal">
+        <div class="project-img">
+          <img src="asset/img/Screenshot 2025-12-24 184105.png" alt="Platform Artikel" onerror="this.style.display='none'">
+          <div class="project-img-ph">📖</div>
+        </div>
+        <div class="project-body">
+          <div class="project-name">PLATFORM ARTIKEL SEKOLAH</div>
+          <div class="project-desc">Portal berbagi artikel pendidikan interaktif berbasis PHP native.</div>
+          <div class="tags"><span class="tag tag-pk">PHP NATIVE</span><span class="tag tag-c">BOOTSTRAP</span></div>
+        </div>
+      </div>
 
-        // YouTube API
-        const YOUTUBE_API_KEY = 'AIzaSyDq_CaH-brLD7YLrI5VLwHX-KsjQ5lucZA';
-        const CHANNEL_ID = 'UCW2noXk_oEKVWPcP8Lo1phQ';
+      <div class="card card-green project-card reveal">
+        <div class="project-img">
+          <img src="asset/img/Screenshot 2026-04-29 091410.png" alt="PKL Platform" onerror="this.style.display='none'">
+          <div class="project-img-ph">📋</div>
+        </div>
+        <div class="project-body">
+          <div class="project-name">PLATFORM PENGAJUAN PKL</div>
+          <div class="project-desc">Sistem digital untuk pengajuan dan pengelolaan program Praktik Kerja Lapangan.</div>
+          <div class="tags"><span class="tag tag-g">LARAVEL</span><span class="tag tag-c">MYSQL</span></div>
+        </div>
+      </div>
 
-        async function fetchYouTubeData() {
-            try {
-                const channelUrl =
-                    `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=${CHANNEL_ID}&key=${YOUTUBE_API_KEY}`;
-                const response = await fetch(channelUrl);
-                const data = await response.json();
+      <div class="card card-cyan project-card reveal">
+        <div class="project-img">
+          <img src="asset/img/Screenshot 2026-04-29 091141.png" alt="Absensi Karangtaruna" onerror="this.style.display='none'">
+          <div class="project-img-ph">✅</div>
+        </div>
+        <div class="project-body">
+          <div class="project-name">ABSENSI KARANGTARUNA</div>
+          <div class="project-desc">Platform absensi digital untuk organisasi kepemudaan berbasis web.</div>
+          <div class="tags"><span class="tag tag-g">LARAVEL</span><span class="tag tag-c">BOOTSTRAP</span></div>
+        </div>
+      </div>
 
-                if (data.items && data.items[0]) {
-                    const channel = data.items[0];
-                    const subs = parseInt(channel.statistics.subscriberCount).toLocaleString('id-ID');
-                    const channelName = channel.snippet.title;
-                    const thumbnail = channel.snippet.thumbnails.default.url;
+      <div class="card card-purple project-card reveal">
+        <div class="project-img">
+          <img src="asset/img/Screenshot 2026-04-29 091531.png" alt="Keuangan Karangtaruna" onerror="this.style.display='none'">
+          <div class="project-img-ph">💰</div>
+        </div>
+        <div class="project-body">
+          <div class="project-name">KEUANGAN KARANGTARUNA</div>
+          <div class="project-desc">Sistem manajemen keuangan terpusat untuk organisasi kepemudaan.</div>
+          <div class="tags"><span class="tag tag-g">LARAVEL</span><span class="tag tag-c">MYSQL</span></div>
+        </div>
+      </div>
 
-                    document.getElementById('youtubeCount').innerHTML = `${subs} <small>Subscriber</small>`;
-                    document.getElementById('youtubeName').textContent = channelName;
-                    document.getElementById('youtubeAvatar').src = thumbnail;
-                }
+    </div>
+  </div>
+</section>
 
-                const videoUrl =
-                    `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${CHANNEL_ID}&maxResults=1&order=date&part=snippet`;
-                const videoResponse = await fetch(videoUrl);
-                const videoData = await videoResponse.json();
+<div class="sec-divider"><span>YOUTUBE</span></div>
 
-                if (videoData.items && videoData.items[0]) {
-                    const videoId = videoData.items[0].id.videoId;
-                    document.getElementById('latestVideo').src = `https://www.youtube.com/embed/${videoId}`;
-                }
-            } catch (error) {
-                console.error('YouTube API Error:', error);
-                document.getElementById('youtubeCount').innerHTML = 'Gagal memuat';
-            }
-        }
+<!-- YOUTUBE -->
+<section id="youtube">
+  <div class="wrap">
+    <div class="sec-eyebrow">// CHANNEL</div>
+    <div class="sec-title">YOUTUBE <span class="accent">STATS</span></div>
+    <div class="yt-grid">
+      <div class="yt-channel reveal-left">
+        <div class="yt-icon-wrap">▶</div>
+        <div class="yt-chname" id="ytName">IVAN KURNIAWAN</div>
+        <div class="yt-stats-list">
+          <div class="yt-stat"><span class="yt-stat-lbl">SUBSCRIBERS</span><span class="yt-stat-val" id="ytSubs">—</span></div>
+          <div class="yt-stat"><span class="yt-stat-lbl">TOTAL VIEWS</span><span class="yt-stat-val" id="ytViews">—</span></div>
+          <div class="yt-stat"><span class="yt-stat-lbl">VIDEOS</span><span class="yt-stat-val" id="ytVids">—</span></div>
+        </div>
+        <a href="https://youtube.com/@ivankurniawan" target="_blank"
+          style="display:block;text-align:center;background:rgba(255,0,0,.9);color:#fff;font-family:var(--font-h);font-size:10px;font-weight:700;letter-spacing:2px;padding:14px;text-decoration:none;transition:background .2s;"
+          onmouseover="this.style.background='#ff0000'" onmouseout="this.style.background='rgba(255,0,0,.9)'">
+          SUBSCRIBE
+        </a>
+      </div>
+      <div class="yt-video-panel reveal-right">
+        <div class="yt-vid-label">VIDEO TERBARU</div>
+        <div class="yt-vid-frame">
+          <iframe id="ytLatestVideo" src="about:blank"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen title="Latest Video"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        fetchYouTubeData();
+<div class="sec-divider"><span>SOCIAL</span></div>
 
-        // Instagram & TikTok Data
-        setTimeout(() => {
-            const demoFollowers = 1086;
-            const demoTikTokFollowers = 3850;
-            document.getElementById('instagramCount').innerHTML =
-                `${demoFollowers.toLocaleString('id-ID')} <small>Pengikut</small>`;
-            document.getElementById('tiktokCount').innerHTML =
-                `${demoTikTokFollowers.toLocaleString('id-ID')} <small>Pengikut</small>`;
-        }, 500);
+<!-- SOCIAL -->
+<section id="social">
+  <div class="wrap">
+    <div class="sec-eyebrow">// TERHUBUNG</div>
+    <div class="sec-title">SOCIAL <span class="accent">MEDIA</span></div>
+    <div class="social-grid">
+      <div class="card card-pink social-card reveal" onclick="window.open('https://youtube.com/@ivankurniawan','_blank')">
+        <span class="social-icon-label" style="color:#ff0000;">▶</span>
+        <div class="social-name" style="color:var(--pink);">YOUTUBE</div>
+        <span class="social-count" id="socialYtSubs" style="color:var(--pink);text-shadow:0 0 10px var(--pink);">—</span>
+        <span class="social-handle">@ivankurniawan</span>
+      </div>
+      <div class="card card-purple social-card reveal" onclick="window.open('https://www.instagram.com/iv.ntyz','_blank')">
+        <span class="social-icon-label" style="color:#e4405f;">📷</span>
+        <div class="social-name" style="color:var(--purple);">INSTAGRAM</div>
+        <span class="social-count" style="color:var(--purple);text-shadow:0 0 10px var(--purple);">1.086</span>
+        <span class="social-handle">@iv.ntyz</span>
+      </div>
+      <div class="card card-cyan social-card reveal" onclick="window.open('https://www.tiktok.com/@user0173726332','_blank')">
+        <span class="social-icon-label" style="color:#fff;">♪</span>
+        <div class="social-name" style="color:var(--cyan);">TIKTOK</div>
+        <span class="social-count" style="color:var(--cyan);text-shadow:0 0 10px var(--cyan);">3.850</span>
+        <span class="social-handle">@user0183173174</span>
+      </div>
+    </div>
+  </div>
+</section>
 
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-    </script>
+<div class="sec-divider"><span>GAME</span></div>
+
+<!-- GAME -->
+<section id="game">
+  <div class="wrap">
+    <div class="sec-eyebrow">// MINI GAME</div>
+    <div class="sec-title">CYBER <span class="accent">RUN</span></div>
+    <div class="game-wrap reveal">
+      <div class="game-hud">
+        <span>SCORE: <span id="gScore" style="color:var(--cyan);">0</span></span>
+        <span style="color:var(--pink);letter-spacing:3px;">CYBER RUN</span>
+        <span>BEST: <span id="gBest" style="color:var(--yellow);">0</span></span>
+      </div>
+      <canvas id="gameCanvas" width="680" height="150"></canvas>
+      <div class="game-foot">
+        <button class="btn-game" id="gameBtn" onclick="gameAction()">START</button>
+        <span class="game-hint">SPACE / KLIK UNTUK LOMPAT</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer id="mainFooter" style="display:none;">
+  <div class="footer-name glitch-wrap" data-text="IVAN KURNIAWAN">IVAN KURNIAWAN</div>
+  <div class="footer-sub">FULL-STACK DEVELOPER · KARANGANYAR, INDONESIA · 2025</div>
+  <div class="footer-links">
+    <a href="https://youtube.com/@ivankurniawan" target="_blank">YOUTUBE</a>
+    <a href="https://www.instagram.com/iv.ntyz" target="_blank">INSTAGRAM</a>
+    <a href="https://www.tiktok.com/@user0173726332" target="_blank">TIKTOK</a>
+  </div>
+  <div class="footer-cr">© 2025 IVAN KURNIAWAN — ALL RIGHTS RESERVED</div>
+</footer>
+
+<script>
+const cur = document.getElementById('cur');
+const cur2 = document.getElementById('cur2');
+let mx = 0, my = 0, cx2 = 0, cy2 = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cur.style.left = mx+'px'; cur.style.top = my+'px'; });
+(function lagCursor(){ cx2 += (mx-cx2)*.12; cy2 += (my-cy2)*.12; cur2.style.left = cx2+'px'; cur2.style.top = cy2+'px'; requestAnimationFrame(lagCursor); })();
+
+const bgC = document.getElementById('bg-canvas');
+const bx = bgC.getContext('2d');
+function resizeBg(){ bgC.width = window.innerWidth; bgC.height = window.innerHeight; }
+resizeBg(); window.addEventListener('resize', resizeBg);
+const pts = Array.from({length:120}, () => ({
+  x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight,
+  vx:(Math.random()-.5)*.3, vy:(Math.random()-.5)*.3,
+  r: Math.random()*1.5+.5,
+  color: ['#00f5ff','#ff0080','#9d00ff','#00ff88'][Math.floor(Math.random()*4)]
+}));
+function drawBg(){
+  bx.clearRect(0,0,bgC.width,bgC.height);
+  pts.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if(p.x<0) p.x=bgC.width; if(p.x>bgC.width) p.x=0;
+    if(p.y<0) p.y=bgC.height; if(p.y>bgC.height) p.y=0;
+    bx.beginPath(); bx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+    bx.fillStyle = p.color; bx.globalAlpha = .35; bx.fill();
+  });
+  bx.globalAlpha = 1;
+  requestAnimationFrame(drawBg);
+}
+drawBg();
+
+let audioOn = false, audioCtx = null;
+const audioBtn = document.getElementById('audioBtn');
+function initAudio(){
+  if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+  if(audioCtx.state==='suspended') audioCtx.resume();
+}
+function playTone(freq, type='sine', dur=.12, vol=.08){
+  if(!audioOn || !audioCtx) return;
+  try{
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.connect(g); g.connect(audioCtx.destination);
+    o.type = type; o.frequency.value = freq;
+    const t = audioCtx.currentTime;
+    g.gain.setValueAtTime(vol, t);
+    g.gain.exponentialRampToValueAtTime(.001, t+dur);
+    o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+function sfx(name){
+  if(!audioOn) return;
+  const m = {
+    click:  ()=>{ playTone(880,'square',.07,.06); playTone(660,'square',.07,.04); },
+    hover:  ()=>{ playTone(1100,'sine',.05,.03); },
+    boot:   ()=>{ [220,330,440,550,660,880].forEach((f,i)=>setTimeout(()=>playTone(f,'sine',.15,.06),i*70)); },
+    jump:   ()=>{ playTone(440,'sine',.08,.1); setTimeout(()=>playTone(660,'sine',.08,.08),60); },
+    die:    ()=>{ [300,200,150].forEach((f,i)=>setTimeout(()=>playTone(f,'sawtooth',.15,.1),i*100)); },
+    score:  ()=>{ playTone(880,'sine',.08,.06); setTimeout(()=>playTone(1100,'sine',.06,.05),80); },
+    enter:  ()=>{ [200,400,600,800].forEach((f,i)=>setTimeout(()=>playTone(f,'sine',.12,.07),i*60)); },
+  };
+  if(m[name]) m[name]();
+}
+audioBtn.addEventListener('click', ()=>{
+  initAudio(); audioOn = !audioOn;
+  audioBtn.textContent = audioOn ? 'SFX ON' : 'SFX OFF';
+  audioBtn.classList.toggle('on', audioOn);
+  if(audioOn) sfx('click');
+});
+
+let bootDone = false;
+const bootFill = document.getElementById('bootFill');
+const bootPct = document.getElementById('bootPct');
+const btnBoot = document.getElementById('btnBoot');
+const bootHint = document.getElementById('bootHint');
+let pct = 0;
+const bootInterval = setInterval(()=>{
+  pct += Math.random()*4 + 1;
+  if(pct>=100){ pct=100; clearInterval(bootInterval); showBootBtn(); }
+  bootFill.style.width = pct+'%';
+  bootPct.textContent = ' '+Math.round(pct)+'%';
+}, 60);
+function showBootBtn(){ btnBoot.style.display = 'block'; bootHint.textContent = 'KLIK UNTUK MASUK'; bootDone = true; }
+btnBoot.addEventListener('click', enterSite);
+document.addEventListener('keydown', e => { if((e.code==='Enter'||e.code==='Space') && bootDone) enterSite(); });
+function enterSite(){
+  if(!bootDone) return;
+  initAudio(); sfx('enter');
+  const bs = document.getElementById('bootScreen');
+  bs.style.transition = 'opacity .8s, transform .8s';
+  bs.style.opacity = '0'; bs.style.transform = 'scale(1.04)';
+  setTimeout(()=>{
+    bs.style.display = 'none';
+    document.getElementById('nav').style.display = 'block';
+    document.getElementById('mainContent').style.display = 'block';
+    document.getElementById('mainFooter').style.display = 'block';
+    document.getElementById('audioBtn').style.display = 'block';
+    startSite();
+  }, 800);
+}
+function startSite(){ initReveal(); startTyped(); fetchYT(); sfx('boot'); }
+
+window.addEventListener('scroll', ()=>{
+  const p = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+  document.getElementById('scrollFill').style.width = p+'%';
+  document.querySelectorAll('.nav-links a').forEach(a=>{
+    const id = a.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if(!el) return;
+    const r = el.getBoundingClientRect();
+    a.classList.toggle('active', r.top<=100 && r.bottom>0);
+  });
+});
+
+const roles = ['FULL-STACK DEVELOPER','CONTENT CREATOR','GAME DEVELOPER','TECH ENTHUSIAST','WEB ENGINEER'];
+let ri=0, ci=0, del=false;
+function startTyped(){ setTimeout(typeStep, 400); }
+function typeStep(){
+  const el = document.getElementById('typedRole');
+  if(!el) return;
+  const word = roles[ri];
+  if(!del){ el.textContent = word.slice(0,ci+1)+'▌'; ci++; if(ci===word.length){ del=true; setTimeout(typeStep,1800); return; } }
+  else { el.textContent = word.slice(0,ci-1)+'▌'; ci--; if(ci===0){ del=false; ri=(ri+1)%roles.length; } }
+  setTimeout(typeStep, del?55:90);
+}
+
+function initReveal(){
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        const sf = e.target.querySelector('.skill-fill');
+        if(sf && sf.dataset.w) sf.style.width = sf.dataset.w+'%';
+      }
+    });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.skill-card').forEach(el=>obs.observe(el));
+}
+
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>sfx('hover'));
+  el.addEventListener('click',()=>sfx('click'));
+});
+document.querySelectorAll('.social-card,.card').forEach(el=>{ el.addEventListener('mouseenter',()=>sfx('hover')); });
+
+const YT_KEY = 'AIzaSyDq_CaH-brLD7YLrI5VLwHX-KsjQ5lucZA';
+const YT_CH  = 'UCW2noXk_oEKVWPcP8Lo1phQ';
+async function fetchYT(){
+  try{
+    const r = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=${YT_CH}&key=${YT_KEY}`);
+    const d = await r.json();
+    if(d.items?.[0]){
+      const ch = d.items[0];
+      const subs  = parseInt(ch.statistics.subscriberCount).toLocaleString('id-ID');
+      const views = parseInt(ch.statistics.viewCount).toLocaleString('id-ID');
+      const vids  = parseInt(ch.statistics.videoCount).toLocaleString('id-ID');
+      document.getElementById('ytName').textContent  = ch.snippet.title;
+      document.getElementById('ytSubs').textContent  = subs;
+      document.getElementById('ytViews').textContent = views;
+      document.getElementById('ytVids').textContent  = vids;
+      document.getElementById('socialYtSubs').textContent = subs+' SUBS';
+    }
+  }catch(e){}
+  try{
+    const rv = await fetch(`https://www.googleapis.com/youtube/v3/search?key=${YT_KEY}&channelId=${YT_CH}&maxResults=1&order=date&part=snippet`);
+    const dv = await rv.json();
+    if(dv.items?.[0]){
+      const vid = dv.items[0].id.videoId;
+      if(vid){
+        const src = `https://www.youtube.com/embed/${vid}?rel=0`;
+        document.getElementById('ytLatestVideo').src  = src;
+        document.getElementById('introVideoFrame').src = src;
+      }
+    }
+  }catch(e){}
+}
+
+const GC = document.getElementById('gameCanvas');
+const G  = GC.getContext('2d');
+const GW = GC.width, GH = GC.height;
+const GROUND = GH - 28;
+let gState = 'idle', gScore = 0, gBest = 0;
+let gFrame = 0, gSpeed = 3.5, gSpawnT = 0, gSpawnInt = 80;
+let gObs = [];
+const player = { x:70, y:GROUND, w:22, h:30, vy:0, jumping:false };
+const colors = { bg:'#040310', ground:'#00f5ff', player:'#00f5ff', obs:'#ff0080', obs2:'#9d00ff' };
+function pJump(){ if(!player.jumping){ player.vy = -9.5; player.jumping = true; sfx('jump'); } }
+function spawnObs(){
+  const h = [28,40,22][Math.floor(Math.random()*3)];
+  const w = [14,18,28][Math.floor(Math.random()*3)];
+  gObs.push({ x:GW+10, y:GROUND-h+6, w, h, color: Math.random()>.5 ? colors.obs : colors.obs2 });
+}
+function drawCyberRect(x,y,w,h,color){ G.fillStyle=color; G.fillRect(x,y,w,h); G.fillStyle='rgba(255,255,255,0.15)'; G.fillRect(x,y,w,1); }
+function drawPlayer(){
+  const x=player.x, y=player.y-player.h;
+  G.shadowColor=colors.player; G.shadowBlur=12; G.fillStyle=colors.player;
+  G.fillRect(x+4,y+4,14,14); G.fillRect(x+6,y,10,8);
+  G.fillStyle='#000'; G.fillRect(x+9,y+2,4,3);
+  G.fillStyle=colors.player;
+  const lf = gFrame%12<6;
+  if(!player.jumping){ G.fillRect(x+4,y+18,5,lf?8:6); G.fillRect(x+13,y+18,5,lf?6:8); }
+  else { G.fillRect(x+4,y+18,5,4); G.fillRect(x+13,y+18,5,4); G.fillRect(x+2,y+22,7,3); G.fillRect(x+13,y+22,7,3); }
+  G.shadowBlur=0;
+}
+function drawObstacle(o){ G.shadowColor=o.color; G.shadowBlur=10; drawCyberRect(o.x,o.y,o.w,o.h,o.color); G.fillStyle='rgba(255,255,255,.2)'; G.fillRect(o.x+2,o.y+2,2,o.h-4); G.shadowBlur=0; }
+function drawGround(){ G.shadowColor=colors.ground; G.shadowBlur=6; G.fillStyle=colors.ground; G.fillRect(0,GROUND+6,GW,1); G.fillStyle='rgba(0,245,255,.3)'; for(let i=0;i<GW;i+=20){ G.fillRect(i+(gFrame*gSpeed%20),GROUND+9,10,1); } G.shadowBlur=0; }
+function drawHUD(){ G.font='11px "Share Tech Mono",monospace'; G.fillStyle=colors.ground; G.shadowColor=colors.ground; G.shadowBlur=6; G.fillText('SCORE '+gScore,10,18); G.shadowBlur=0; }
+function drawIdle(){ G.fillStyle=colors.bg; G.fillRect(0,0,GW,GH); drawGround(); drawPlayer(); G.font='13px "Share Tech Mono",monospace'; G.textAlign='center'; G.fillStyle='rgba(0,245,255,.7)'; G.shadowColor=colors.ground; G.shadowBlur=8; G.fillText('[ PRESS SPACE OR CLICK TO START ]',GW/2,GH/2-8); G.shadowBlur=0; G.textAlign='left'; }
+function drawDead(){ G.fillStyle='rgba(255,0,128,.08)'; G.fillRect(0,0,GW,GH); G.font='13px "Share Tech Mono",monospace'; G.textAlign='center'; G.fillStyle=colors.obs; G.shadowColor=colors.obs; G.shadowBlur=12; G.fillText('GAME OVER — SCORE: '+gScore,GW/2,GH/2-12); G.shadowBlur=0; G.fillStyle='rgba(0,245,255,.7)'; G.fillText('[ SPACE / CLICK TO RETRY ]',GW/2,GH/2+12); G.textAlign='left'; }
+function hitTest(a,b){ const m=5; return a.x+m<b.x+b.w-m && a.x+a.w-m>b.x+m && (a.y-a.h)+m<b.y+b.h-m && a.y-m>b.y+m; }
+function gameLoop(){
+  G.fillStyle=colors.bg; G.fillRect(0,0,GW,GH);
+  if(gState==='idle'){ drawIdle(); requestAnimationFrame(gameLoop); return; }
+  if(gState==='dead'){ drawDead(); requestAnimationFrame(gameLoop); return; }
+  gFrame++;
+  player.vy += .55; player.y += player.vy;
+  if(player.y>=GROUND){ player.y=GROUND; player.vy=0; player.jumping=false; }
+  drawGround(); drawPlayer();
+  gSpawnT++;
+  if(gSpawnT>=gSpawnInt){ spawnObs(); gSpawnT=0; gSpawnInt=Math.max(38,gSpawnInt-.8); }
+  for(let i=gObs.length-1;i>=0;i--){
+    gObs[i].x-=gSpeed; drawObstacle(gObs[i]);
+    if(hitTest(player,gObs[i])){ gState='dead'; gBest=Math.max(gBest,gScore); document.getElementById('gBest').textContent=gBest; sfx('die'); break; }
+    if(gObs[i].x+gObs[i].w<0) gObs.splice(i,1);
+  }
+  if(gFrame%5===0){ gScore++; document.getElementById('gScore').textContent=gScore; }
+  if(gScore%100===0&&gScore>0){ gSpeed+=.25; sfx('score'); }
+  drawHUD();
+  requestAnimationFrame(gameLoop);
+}
+function gameAction(){
+  initAudio();
+  if(gState==='idle'){ gState='running'; gScore=0; gSpeed=3.5; gSpawnT=0; gSpawnInt=80; gObs=[]; document.getElementById('gameBtn').textContent='JUMP'; sfx('enter'); }
+  else if(gState==='running'){ pJump(); }
+  else { gState='running'; gScore=0; gSpeed=3.5; gSpawnT=0; gSpawnInt=80; gObs=[]; player.y=GROUND; player.vy=0; player.jumping=false; document.getElementById('gScore').textContent=0; sfx('enter'); }
+}
+document.addEventListener('keydown', e=>{
+  if(e.code==='Space'||e.code==='ArrowUp'){
+    e.preventDefault();
+    if(document.getElementById('mainContent').style.display!=='none') gameAction();
+  }
+});
+GC.addEventListener('click', ()=>{ initAudio(); gameAction(); });
+gameLoop();
+</script>
 </body>
-
 </html>
